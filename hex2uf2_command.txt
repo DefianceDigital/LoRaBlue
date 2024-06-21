@@ -1,0 +1,1 @@
+sudo python3 hex2uf2.py firmware.hex -c -f 0xADA52840
