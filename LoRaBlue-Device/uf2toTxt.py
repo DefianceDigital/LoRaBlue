@@ -1,5 +1,5 @@
-input = "flash.uf2"                                                             # Input File
-output = "flash.txt"                                                           # Output File:
+input = "firmware.uf2"                                                             # Input File
+output = "firmware.txt"                                                           # Output File:
 
 delim = 1                                                                       # Insert separator every n bytes
 newline = 10                                                                    # Insert newline every n delimiters

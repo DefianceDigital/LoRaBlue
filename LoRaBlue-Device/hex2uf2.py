@@ -282,7 +282,7 @@ def main():
                         default="0x0",
                         help='specify familyID - number or name (default: 0x0)')
     parser.add_argument('-o', '--output', metavar="FILE", dest='output', type=str,
-                        help='write output to named file; defaults to "flash.uf2" or "flash.bin" where sensible')
+                        help='write output to named file; defaults to "firmware.uf2" or "firmware.bin" where sensible')
     parser.add_argument('-d', '--device', dest="device_path",
                         help='select a device path to flash')
     parser.add_argument('-l', '--list', action='store_true',
@@ -339,7 +339,7 @@ def main():
                   (ext, len(outbuf), appstartaddr))
         if args.convert or ext != "uf2":
             if args.output == None:
-                args.output = "flash." + ext
+                args.output = "firmware." + ext
         if args.output:
             write_file(args.output, outbuf)
         if ext == "uf2" and not args.convert and not args.info:
