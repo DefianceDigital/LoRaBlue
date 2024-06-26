@@ -1,3 +1,5 @@
+//LoRaBlue Power Bank Standby Time: 18 hours
+
 // Recieving Current: <20mA
 // Sending Current: <85mA
 // Sleep Current: <0.4mA
