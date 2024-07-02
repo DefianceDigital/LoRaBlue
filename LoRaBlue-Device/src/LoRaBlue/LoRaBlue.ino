@@ -302,7 +302,7 @@ void setup()
     // Note: All config***() function must be called before begin()
     Bluefruit.configPrphBandwidth(BANDWIDTH_MAX); // BANDWIDTH_MAX allows upt to 247 bytes
 
-  Bluefruit.begin();
+  Bluefruit.begin();  
   Bluefruit.setTxPower(8);    // Check bluefruit.h for supported values (default=4 max=8)
 
   file.open("PIN", FILE_O_READ);
