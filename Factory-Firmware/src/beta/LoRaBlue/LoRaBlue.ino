@@ -33,23 +33,23 @@ BLEDis  bledis;  // device information
 BLEUart bleuart; // uart over ble
 BLEBas  blebas;  // battery
 
-float version = 1.21;
+float version = 1.22;
 #define MTU 247
 uint8_t periph = 0; //used to respond on appropriate peripheral
 volatile bool requestReceipt = false; // if we're echoing a message, we want or need a response
 
 // These settings have been painstakingly tested for best results
 // Essentially you can just NEVER EVER have a hopping period of less than 12. Even if it appears to work, it doesn't
-// range(%)           {41%   58%   69%  82%   100%  }
-// range(mi)          {1     1.5   1.75 2     2.5   } (With one upstairs)
-// seconds            {0.5   1.7   3    8.5   17    }
-float bwIndex[5] =    {500,  250,  125, 62.5, 31.25 }; 
-uint16_t hpIndex[5] = {255,  125,  50,  25,   12,   };    
-uint8_t sfIndex[5] =  {9,    10,   10,  10,   10,   };    
-uint8_t crIndex[5] =  {8,    8,    7,   8,    8,    };
-// Link Budget        {143,  149,  152, 155,  158.4 }
-// Rec. Sensitivity   {-123, -129, -132 -135, -138.4}
-// LB-RS              {266,  278,  284, 290,  296.8 }
+// range(%)           {41%   58%   82%   100%  }
+// range(mi)          {1     1.5   2     2.5   } (With one upstairs)
+// seconds            {0.5   1.7   8.5   17    }
+float bwIndex[5] =    {500,  250,  62.5, 31.25 }; 
+uint16_t hpIndex[5] = {255,  125,  25,   12,   };    
+uint8_t sfIndex[5] =  {9,    10,   10,   10,   };    
+uint8_t crIndex[5] =  {8,    8,    8,    8,    };
+// Link Budget        {143,  149,  155,  158.4 }
+// Rec. Sensitivity   {-123, -129, -135, -138.4}
+// LB-RS              {266,  278,  290,  296.8 }
 
 volatile bool transmittedFlag = false;
 volatile bool receivedFlag = false;
@@ -80,7 +80,7 @@ void queueMsg(const char msg[208], unsigned char enc, unsigned char ech, unsigne
   pendingTs = ts;
 }
 void queueRaw(uint8_t msg[MTU], unsigned long mid, unsigned long ts){
-  int randomDelay = radio.randomByte() * 2; // 0-512ms so everybody doesn't try to echo at once
+  int randomDelay = (radio.randomByte() * 20) + millis(); // 0-5.1 seconds to try and avoid everybody echoing at once
   queueDelay = randomDelay;
   memcpy(pendingRaw, msg, sizeof(pendingRaw));
   logMsgID(mid, ts);
@@ -452,25 +452,39 @@ void startAdv(void)
 void queueLoop(){
   if(millis() > queueDelay){
     queueDelay = 0xFFFFFFFF;
+    queueWaiting = true;
+
+    // disable led so it doesn't show scans
+    //digitalWrite(2, LOW);
+
     radio.setDio0Action(setFlagTimeout, RISING);
     radio.setDio1Action(setFlagDetected, RISING);
     radio.startChannelScan();
   }
-  //  handle queue
-  if(detectedFlag || timeoutFlag) {
-    if(detectedFlag) {
-      // preamble detected
-      timeoutFlag = false;
-      detectedFlag = false;
-      radio.startChannelScan();
-    } else {
-      // channel free
-      timeoutFlag = false;
-      detectedFlag = false;
-      if(requestReceipt){
-        transmit((char*)pendingMsg, pendingEnc, pendingEch, (unsigned char*)pendingMid, pendingTs);
-      } else { // if echo
-        rawTransmit((uint8_t*)pendingRaw, sizeof(pendingRaw));
+  if(queueWaiting){
+    //  handle queue
+    if(detectedFlag || timeoutFlag) {
+      if(detectedFlag) {
+        // preamble detected
+        timeoutFlag = false;
+        detectedFlag = false;
+        radio.startChannelScan();
+      } else {
+        // channel free
+        queueWaiting = false;
+        timeoutFlag = false;
+        detectedFlag = false;
+
+        // enable led to show hops (now that we're not scanning anymore)
+        /*if(LED > 1){
+          digitalWrite(2, HIGH);
+        }*/
+
+        if(requestReceipt){
+          transmit((char*)pendingMsg, pendingEnc, pendingEch, (unsigned char*)pendingMid, pendingTs);
+        } else { // if echo
+          rawTransmit((uint8_t*)pendingRaw, sizeof(pendingRaw));
+        }
       }
     }
   }
