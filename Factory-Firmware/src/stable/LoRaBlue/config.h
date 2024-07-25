@@ -8,7 +8,7 @@ bool cfgDebug = false; // delay of 3s is required after Serial.begin()
 
 unsigned long echoID[100]; // message identifier
 unsigned long echoTS[100]; // message time stamp
-uint8_t MAXECHO = 3; // sets maximum bounces you will ask for and/or perform
+uint8_t MAXECHO = 5; // sets maximum bounces you will perform
 
 File file(InternalFS);
 
@@ -28,7 +28,7 @@ uint8_t PRE = 6; // LoRa Preamble
 uint8_t PWR = 20; // LoRa Power Level
 uint8_t GAIN = 0; //LoRa GAIN
 bool CRC = 0; // LoRa Cyclic Redundancy Check
-uint8_t LED = 0; // 0=none, 1=con only, 2=con+fhss, 3=fhss only
+uint8_t LED = 2; // 0=none, 1=con only, 2=con+fhss, 3=fhss only
 bool ENAP = true; // Enable all peripherals
 // AT Command Variables
 
@@ -195,6 +195,13 @@ void getConfig(){
     if(cfgDebug){
       Serial.print("DEFICHAT="); Serial.println(DEFICHAT);
     }
+
+    // MAXECHO
+    while(file.read() != '=');
+    MAXECHO = file.readStringUntil('\n').toInt();
+    if(cfgDebug){
+      Serial.print("MAXECHO="); Serial.println(MAXECHO);
+    }
     
     file.close();
 }
@@ -232,6 +239,7 @@ void setConfig(){
       file.print("ENAP="); file.println(ENAP);
       file.print("ENCRYPT="); file.println(ENCRYPT);
       file.print("DEFICHAT="); file.println(DEFICHAT);
+      file.print("MAXECHO="); file.println(MAXECHO);
       file.close();
     }else
     {
