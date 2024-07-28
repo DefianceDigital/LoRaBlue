@@ -33,7 +33,7 @@ BLEDis  bledis;  // device information
 BLEUart bleuart; // uart over ble
 BLEBas  blebas;  // battery
 
-float version = 1.24;
+float version = 1.25;
 #define MTU 247
 uint8_t periph = 0; //used to respond on appropriate peripheral
 volatile bool requestReceipt = false; // if we're echoing a message, we want or need a response
@@ -83,7 +83,6 @@ void queueRaw(uint8_t msg[MTU], unsigned long mid, unsigned long ts){
   int randomDelay = (radio.randomByte() * 20) + millis(); // 0-5.1 seconds to try and avoid everybody echoing at once
   queueDelay = randomDelay;
   memcpy(pendingRaw, msg, sizeof(pendingRaw));
-  logMsgID(mid, ts);
 }
 
 void setTxFlag(void) {
@@ -803,11 +802,20 @@ void loop()
       //Serial.print("\nmemcmp: "); Serial.println(memcmp(incomingID, compBuf, 4)); Serial.println();
       //////////////////////////////////////////////////////
 
+      volatile bool newEcho = isNewEcho(newID);
+      if(newEcho){
+        // log it so we don't print it again
+        logMsgID(newEcho, millis());
+      }
+
+      //Serial.print("\nnewID: "); Serial.print(newID); Serial.print("\t");
+      //Serial.print("isNewEcho: "); Serial.print(newEcho); Serial.print("\t");
       if(DEFICHAT && (incoming[1] < MAXECHO) && isNewEcho(newID)){
+        logMsgID(newID, millis());
         if(relayMSG){
           exportData(message, strlen((char*)message));
+          //Serial.print("\nCondition: "); Serial.print("1");
         }
-
         // echo message
         unsigned char outgoing[MTU];
         memcpy(outgoing, incoming, sizeof(outgoing));
@@ -815,11 +823,14 @@ void loop()
         requestReceipt = false; // we don't want a response for an echo
         queueRaw((uint8_t*)outgoing, newID, millis());
       } else if(DEFICHAT && (MAXECHO == 0) && isNewEcho(newID)){ // still receive new messages even if we don't want to echo them
+        logMsgID(newID, millis());
         if(relayMSG){
+          //Serial.print("Condition: "); Serial.print("2"); Serial.print("\tMessage: ");
           exportData(message, strlen((char*)message));
         }
       } else if(DEFICHAT == false){
         if(relayMSG){
+          //Serial.print("\nCondition: "); Serial.print("3"); Serial.print("\tMessage: ");
           exportData(message, strlen((char*)message));
         }
       } 
@@ -2191,11 +2202,13 @@ void logMsgID(unsigned long id, unsigned long ts){
   }*/
 }
 
-bool isNewEcho(unsigned long id){
-  bool isNew = true;
+volatile bool isNewEcho(unsigned long id){
+  volatile bool isNew = true;
   for(uint8_t i = 0; i < 100; i++){
+    //Serial.println(echoID[i]);
     if(echoID[i] == id){
       isNew = false;
+      break;
     }
   }
   return isNew;

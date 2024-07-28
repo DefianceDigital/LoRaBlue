@@ -29,7 +29,7 @@ uint8_t PWR = 20; // LoRa Power Level
 uint8_t GAIN = 0; //LoRa GAIN
 bool CRC = 0; // LoRa Cyclic Redundancy Check
 uint8_t LED = 2; // 0=none, 1=con only, 2=con+fhss, 3=fhss only
-bool ENAP = true; // Enable all peripherals
+bool ENAP = 0; // Enable all peripherals
 // AT Command Variables
 
 bool DEFICHAT = true;
