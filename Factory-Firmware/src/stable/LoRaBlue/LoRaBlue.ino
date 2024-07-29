@@ -1142,7 +1142,7 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     reset();
   }
   else if(strncmp((char*)buf, (char*)"AT+DEFAULT=", sizeof("AT+DEFAULT=")-1) == 0){ // set LoRa to recommended settings (0-3)
-    bufStart = strlen("AT+DEFAULT=")-1;
+    bufStart = sizeof("AT+DEFAULT=")-1;
     for(uint8_t i = pos; i < len; i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
