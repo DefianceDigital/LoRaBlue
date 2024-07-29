@@ -1110,12 +1110,7 @@ void resetLoop(){
   NVIC_SystemReset();
 }
 
-String callCMD(const uint8_t* buf, const uint8_t len){
-  uint8_t pos = 0;
-  uint8_t bufStart;
-  char process[len];
-  memset(process, 0, len);
-
+String callCMD(uint8_t* buf, uint8_t len){
   String ret = "";
   if(strncmp((char*)buf, (char*)"AT+VERSION", sizeof("AT+VERSION")-1) == 0){ // this should process AT commands
     ret = "AT+VERSION=" + String(version);
@@ -1142,11 +1137,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     reset();
   }
   else if(strncmp((char*)buf, (char*)"AT+DEFAULT=", sizeof("AT+DEFAULT=")-1) == 0){ // set LoRa to recommended settings (0-3)
-    bufStart = strlen("AT+DEFAULT=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+DEFAULT=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1157,6 +1154,7 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     if(def){
       InternalFS.format(); // erase all internal data
       ret = "AT+OK";
+      
       reset();
     } else {
       ret = "AT+ERROR=DEFAULT_MUST_BE_1";
@@ -1166,11 +1164,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+ERROR=NO_VALUE_SPECIFIED";
   }
   else if(strncmp((char*)buf, (char*)"AT+SLEEP=", sizeof("AT+SLEEP=")-1) == 0){ // set LoRa to recommended settings (0-3)
-    bufStart = sizeof("AT+SLEEP=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+SLEEP=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1190,8 +1190,6 @@ String callCMD(const uint8_t* buf, const uint8_t len){
         ret = "AT+ERROR=USB_CAN_NOT_CALL_SLEEP";
       } 
       else if(periph == 1){
-        digitalWrite(LED_BUILTIN, LOW);
-      digitalWrite(2, LOW);
         Serial1.println("AT+OK");
         delay(250);
         pinMode(SWITCH, INPUT_PULLDOWN_SENSE);  // this pin (SWITCH PIN) is pulled down and wakes up the board when externally connected to 3.3v.
@@ -1199,8 +1197,6 @@ String callCMD(const uint8_t* buf, const uint8_t len){
         sd_power_system_off(); // this function puts the whole nRF52 to deep sleep (no Bluetooth)
       }
       else if(periph == 2){
-        digitalWrite(LED_BUILTIN, LOW);
-      digitalWrite(2, LOW);
         bleuart.println("AT+OK");
         delay(250);
         pinMode(SWITCH, INPUT_PULLDOWN_SENSE);  // this pin (SWITCH PIN) is pulled down and wakes up the board when externally connected to 3.3v.
@@ -1216,26 +1212,28 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+ERROR=NO_VALUE_SPECIFIED";
   }
   else if(strncmp((char*)buf, (char*)"AT+SETRANGE=", sizeof("AT+SETRANGE=")-1) == 0){ // set LoRa to recommended settings (0-3)
-    bufStart = sizeof("AT+SETRANGE=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+SETRANGE=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
         }
       }
     }
-    uint8_t def = String(process).toInt();
-    if(def < 6){
+    uint8_t SETRANGE = String(process).toInt();
+    if(SETRANGE < 6){
       FHSS = 1;
       HC = 64;
       FREQ = channels[HC];
-      BW = bwIndex[def];
-      HP = hpIndex[def];
-      SF = sfIndex[def];
-      CR = crIndex[def];
+      BW = bwIndex[SETRANGE];
+      HP = hpIndex[SETRANGE];
+      SF = sfIndex[SETRANGE];
+      CR = crIndex[SETRANGE];
       SW = 0xDD; // LoRa Sync Word
       PRE = 6; // LoRa Preamble
       PWR = 20; // LoRa Power Level
@@ -1252,11 +1250,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+ERROR=NO_VALUE_SPECIFIED";
   }
   else if(strncmp((char*)buf, (char*)"AT+BTEN=", sizeof("AT+BTEN=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+BTEN=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+BTEN=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1273,11 +1273,14 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+BTEN=" + String(BTEN);
   } 
   else if(strncmp((char*)buf, (char*)"AT+NAME=", sizeof("AT+NAME=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+NAME=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+NAME=")-1;
+    char process[(len-bufStart)+1];
+    memset(process, 0, sizeof(process));
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1304,11 +1307,14 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+NAME=" + file.readString();
   }
   else if(strncmp((char*)buf, (char*)"AT+SETUP=", sizeof("AT+SETUP=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+SETUP=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+SETUP=")-1;
+    char process[(len-bufStart)+1];
+    memset(process, 0, sizeof(process));
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1342,11 +1348,14 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     // do nothing
   }
   else if(strncmp((char*)buf, (char*)"AT+PIN=", sizeof("AT+PIN=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+PIN=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+PIN=")-1;
+    char process[(len-bufStart)+1];
+    memset(process, 0, sizeof(process));
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1374,11 +1383,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+PIN=" + file.readString();
   }
   else if(strncmp((char*)buf, (char*)"AT+BAUD=", sizeof("AT+BAUD=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+BAUD=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+BAUD=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1399,11 +1410,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+BAUD=" + String(BAUD);
   }
   else if(strncmp((char*)buf, (char*)"AT+DEBUG=", sizeof("AT+DEBUG=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+DEBUG=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+DEBUG=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1419,11 +1432,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+DEBUG=" + String(DEBUG);
   }
   else if(strncmp((char*)buf, (char*)"AT+FHSS=", sizeof("AT+FHSS=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+FHSS=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+FHSS=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1451,11 +1466,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+FHSS=" + String(FHSS);
   }
   else if(strncmp((char*)buf, (char*)"AT+HC=", sizeof("AT+HC=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+HC=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+HC=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1471,11 +1488,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+HC=" + String(HC);
   }
   else if(strncmp((char*)buf, (char*)"AT+FREQ=", sizeof("AT+FREQ=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+FREQ=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+FREQ=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1485,13 +1504,12 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     if(FHSS){
       ret = "AT+ERROR=NOT_AVAILABLE_WITH_FHSS";
     } else {
-      float def = String(process).toFloat();
-      int state = radio.setFrequency(def);
+      int state = radio.setFrequency(String(process).toFloat());
       if (state == RADIOLIB_ERR_NONE) {
-        FREQ = def;
+        FREQ = String(process).toFloat();
         ret = "AT+OK";
       } else {
-        ret = "AT+ERROR=" + errorCode[abs(state)] + "_[" + String(process).toInt() + "]";
+        ret = "AT+ERROR=" + errorCode[abs(state)];
       }
     }
   }
@@ -1503,11 +1521,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     }
   }
   else if(strncmp((char*)buf, (char*)"AT+HP=", sizeof("AT+HP=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+HP=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+HP=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1530,46 +1550,49 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+HP=" + String(HP);
   }
   else if(strncmp((char*)buf, (char*)"AT+BW=", sizeof("AT+BW=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+BW=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+BW=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
         }
       }
     }
-    float def = String(process).toFloat();
-    int state = radio.setBandwidth(def);
+    int state = radio.setBandwidth(String(process).toFloat());
     if (state == RADIOLIB_ERR_NONE) {
-      BW = def;
+      BW = String(process).toFloat();
       setConfig();
       ret = "AT+OK";
     } else {
-      ret = "AT+ERROR=" + errorCode[abs(state)] + "_[" + String(process).toInt() + "]";
+      ret = "AT+ERROR=" + errorCode[abs(state)];
     }
   }
   else if(strncmp((char*)buf, (char*)"AT+BW", sizeof("AT+BW")-1) == 0){ // get name
     ret = "AT+BW=" + String(BW);
   }
   else if(strncmp((char*)buf, (char*)"AT+SF=", sizeof("AT+SF=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+SF=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+SF=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
         }
       }
     }
-    int def = String(process).toInt();
-    int state = radio.setSpreadingFactor(def);
+    int sf = String(process).toInt();
+    int state = radio.setSpreadingFactor(sf);
     if (state == RADIOLIB_ERR_NONE) {
-      SF = def;
+      SF = sf;
       setConfig();
       ret = "AT+OK";
     } else {
@@ -1580,25 +1603,26 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+SF=" + String(SF);
   }
   else if(strncmp((char*)buf, (char*)"AT+CRC=", sizeof("AT+CRC=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+CRC=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+CRC=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
         }
       }
     }
-    bool def = String(process).toInt();
-    int state = radio.setCRC(def);
+    int state = radio.setCRC(String(process).toInt());
     if (state == RADIOLIB_ERR_NONE) {
-      CRC = def;
+      CRC = String(process).toInt();
       setConfig();
       ret = "AT+OK";
     } else {
-      ret = "AT+ERROR=" + errorCode[abs(state)] + "_[" + String(process).toInt() + "]";
+      ret = "AT+ERROR=" + errorCode[abs(state)];
     }
     // in this case, chamges won't take effect until reset
   }
@@ -1606,46 +1630,48 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+CRC=" + String(CRC);
   }
   else if(strncmp((char*)buf, (char*)"AT+CR=", sizeof("AT+CR=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+CR=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+CR=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
         }
       }
     }
-    uint8_t def = String(process).toInt();
-    int state = radio.setCodingRate(def);
+    int state = radio.setCodingRate(String(process).toFloat());
     if (state == RADIOLIB_ERR_NONE) {
-      CR = def;
+      CR = String(process).toInt();
       setConfig();
       ret = "AT+OK";
     } else {
-      ret = "AT+ERROR=" + errorCode[abs(state)] + "_[" + String(process).toInt() + "]";
+      ret = "AT+ERROR=" + errorCode[abs(state)];
     }
   }
   else if(strncmp((char*)buf, (char*)"AT+CR", sizeof("AT+CR")-1) == 0){ // get name
     ret = "AT+CR=" + String(CR);
   }
   else if(strncmp((char*)buf, (char*)"AT+SW=", sizeof("AT+SW=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+SW=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+SW=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
         }
       }
     }
-    uint8_t def = String(process).toInt();
-    int state = radio.setSyncWord(def);
+    int state = radio.setSyncWord(String(process).toInt());
     if (state == RADIOLIB_ERR_NONE) {
-      SW = def;
+      SW = String(process).toInt();
       setConfig();
       ret = "AT+OK";
     } else {
@@ -1657,50 +1683,52 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+SW=" + String(SW);
   }  
   else if(strncmp((char*)buf, (char*)"AT+PRE=", sizeof("AT+PRE=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+PRE=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+PRE=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
         }
       }
     }
-    int def = String(process).toInt();
-    int state = radio.setPreambleLength(def);
+    int state = radio.setPreambleLength(String(process).toInt());
     if (state == RADIOLIB_ERR_NONE) {
-      PRE = def;
+      PRE = String(process).toInt();
       setConfig();
       ret = "AT+OK";
     } else {
-      ret = "AT+ERROR=" + errorCode[abs(state)] + "_[" + String(process).toInt() + "]";
+      ret = "AT+ERROR=" + errorCode[abs(state)];
     }
   }
   else if(strncmp((char*)buf, (char*)"AT+PRE", sizeof("AT+PRE")-1) == 0){ // get name
     ret = "AT+PRE=" + String(PRE);
   }
   else if(strncmp((char*)buf, (char*)"AT+PWR=", sizeof("AT+PWR=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+PWR=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+PWR=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
         }
       }
     }
-    uint8_t def = String(process).toInt();
-    int state = radio.setOutputPower(def);
+    int state = radio.setOutputPower(String(process).toInt());
     if (state == RADIOLIB_ERR_NONE) {
-      PWR = def;
+      PWR = String(process).toInt();
       setConfig();
       ret = "AT+OK";
     } else {
-      ret = "AT+ERROR=" + errorCode[abs(state)] + "_[" + String(process).toInt() + "]";
+      ret = "AT+ERROR=" + errorCode[abs(state)];
     }
     // in this case, chamges won't take effect until reset
   }
@@ -1708,25 +1736,26 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+PWR=" + String(PWR);
   }
   else if(strncmp((char*)buf, (char*)"AT+GAIN=", sizeof("AT+GAIN=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+GAIN=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+GAIN=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
         }
       }
     }
-    uint8_t def = String(process).toInt();
-    int state = radio.setGain(def);
+    int state = radio.setGain(String(process).toInt());
     if (state == RADIOLIB_ERR_NONE) {
-      GAIN = def;
+      GAIN = String(process).toInt();
       setConfig();
       ret = "AT+OK";
     } else {
-      ret = "AT+ERROR=" + errorCode[abs(state)] + "_[" + String(process).toInt() + "]";
+      ret = "AT+ERROR=" + errorCode[abs(state)];
     }
     // in this case, chamges won't take effect until reset
   }
@@ -1734,11 +1763,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+GAIN=" + String(GAIN);
   }
   else if(strncmp((char*)buf, (char*)"AT+ENAP=", sizeof("AT+ENAP=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+ENAP=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+ENAP=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1754,20 +1785,21 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+ENAP=" + String(ENAP);
   }
   else if(strncmp((char*)buf, (char*)"AT+LED=", sizeof("AT+LED=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+LED=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+LED=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
         }
       }
     }
-    uint8_t def = String(process).toInt();
-    if(def < 4){
-      LED = def;
+    if(String(process).toInt() < 4){
+      LED = String(process).toInt();
       setConfig();
       ret = "AT+OK";
       reset();
@@ -1780,11 +1812,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+LED=" + String(LED);
   }
   else if(strncmp((char*)buf, (char*)"AT+DEFICHAT=", sizeof("AT+DEFICHAT=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+DEFICHAT=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+DEFICHAT=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1800,11 +1834,13 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+DEFICHAT=" + String(DEFICHAT);
   }
   else if(strncmp((char*)buf, (char*)"AT+ENCRYPT=", sizeof("AT+ENCRYPT=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+ENCRYPT=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+ENCRYPT=")-1;
+    char process[(len-bufStart)+1];
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1820,11 +1856,14 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     ret = "AT+ENCRYPT=" + String(ENCRYPT);
   }
   else if(strncmp((char*)buf, (char*)"AT+USER=", sizeof("AT+USER=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+USER=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+USER=")-1;
+    char process[(len-bufStart)+1];
+    memset(process, 0, sizeof(process));
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1852,11 +1891,14 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     file.close();
   }
   else if(strncmp((char*)buf, (char*)"AT+PASSPHR=", sizeof("AT+PASSPHR=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+PASSPHR=")-1;
-    for(uint8_t i = pos; i < len; i++){
+    uint8_t pos = 0;
+    uint8_t bufStart = sizeof("AT+PASSPHR=")-1;
+    char process[(len-bufStart)+1];
+    memset(process, 0, sizeof(process));
+    for(uint8_t i = pos; i < sizeof(process); i++){
       if((char)buf[pos+bufStart] != '\r'){
         if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
+          if(buf[pos+bufStart] != 0){
             process[pos] = buf[pos+bufStart]; //buf[pos];
             pos++;
           }
@@ -1924,36 +1966,11 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     radio.setDio0Action(setRxFlag, RISING);
     radio.startReceive();
   }
-  else if(strncmp((char*)buf, (char*)"AT+MAXECHO=", sizeof("AT+MAXECHO=")-1) == 0){ // set new name
-    bufStart = sizeof("AT+MAXECHO=")-1;
-    for(uint8_t i = pos; i < len; i++){
-      if((char)buf[pos+bufStart] != '\r'){
-        if((char)buf[pos+bufStart] != '\n'){
-          if(buf[pos+bufStart] != 0x00){
-            process[pos] = buf[pos+bufStart]; //buf[pos];
-            pos++;
-          }
-        }
-      }
-    }
-    MAXECHO = String(process).toInt();
-    setConfig();
-    ret = "AT+OK";
-    // in this case, chamges won't take effect until reset
-  }
-  else if(strncmp((char*)buf, (char*)"AT+MAXECHO", sizeof("AT+MAXECHO")-1) == 0){ // get name
-    ret = "AT+MAXECHO=" + String(MAXECHO);
-  }
   /////////// End of variables ///////////
   else {
     ret = "AT+ERROR=UNKNOWN_COMMAND";
   }
   
-  // the need for this appears to be a glitch we just can't find the cause
-  if((LED > 0) && (LED < 3)){
-    digitalWrite(LED_BUILTIN, HIGH);
-  }
-
   return ret + "\n";
 }
 
