@@ -33,7 +33,7 @@ BLEDis  bledis;  // device information
 BLEUart bleuart; // uart over ble
 BLEBas  blebas;  // battery
 
-float version = 1.25;
+float version = 1.26;
 #define MTU 247
 uint8_t periph = 0; //used to respond on appropriate peripheral
 volatile bool requestReceipt = false; // if we're echoing a message, we want or need a response
@@ -56,7 +56,8 @@ volatile bool receivedFlag = false;
 volatile bool fhssChangeFlag = false;
 volatile bool timeoutFlag = false;
 volatile bool detectedFlag = false;
-static float channels[128] = {902.20,902.40,902.60,902.80,903.00,903.20,903.40,903.60,903.80,904.00,904.20,904.40,904.60,904.80,905.00,905.20,905.40,905.60,905.80,906.00,906.20,906.40,906.60,906.80,907.00,907.20,907.40,907.60,907.80,908.00,908.20,908.40,908.60,908.80,909.00,909.20,909.40,909.60,909.80,910.00,910.20,910.40,910.60,910.80,911.00,911.20,911.40,911.60,911.80,912.00,912.20,912.40,912.60,912.80,913.00,913.20,913.40,913.60,913.80,914.00,914.20,914.40,914.60,914.80,915.00,915.20,915.40,915.60,915.80,916.00,916.20,916.40,916.60,916.80,917.00,917.20,917.40,917.60,917.80,918.00,918.20,918.40,918.60,918.80,919.00,919.20,919.40,919.60,919.80,920.00,920.20,920.40,920.60,920.80,921.00,921.20,921.40,921.60,921.80,922.00,922.20,922.40,922.60,922.80,923.00,923.20,923.40,923.60,923.80,924.00,924.20,924.40,924.60,924.80,925.00,925.20,925.40,925.60,925.80,926.00,926.20,926.40,926.60,926.80,927.00,927.20,927.40,927.60};
+//static float channels[128] = {902.20,902.40,902.60,902.80,903.00,903.20,903.40,903.60,903.80,904.00,904.20,904.40,904.60,904.80,905.00,905.20,905.40,905.60,905.80,906.00,906.20,906.40,906.60,906.80,907.00,907.20,907.40,907.60,907.80,908.00,908.20,908.40,908.60,908.80,909.00,909.20,909.40,909.60,909.80,910.00,910.20,910.40,910.60,910.80,911.00,911.20,911.40,911.60,911.80,912.00,912.20,912.40,912.60,912.80,913.00,913.20,913.40,913.60,913.80,914.00,914.20,914.40,914.60,914.80,915.00,915.20,915.40,915.60,915.80,916.00,916.20,916.40,916.60,916.80,917.00,917.20,917.40,917.60,917.80,918.00,918.20,918.40,918.60,918.80,919.00,919.20,919.40,919.60,919.80,920.00,920.20,920.40,920.60,920.80,921.00,921.20,921.40,921.60,921.80,922.00,922.20,922.40,922.60,922.80,923.00,923.20,923.40,923.60,923.80,924.00,924.20,924.40,924.60,924.80,925.00,925.20,925.40,925.60,925.80,926.00,926.20,926.40,926.60,926.80,927.00,927.20,927.40,927.60};
+static float channels[128] = {902.20,927.60,902.40,927.40,902.60,927.20,902.80,927.00,903.00,926.80,903.20,926.60,903.40,926.40,903.60,926.20,903.80,926.00,904.00,925.80,904.20,925.60,904.40,925.40,904.60,925.20,904.80,925.00,905.00,924.80,905.20,924.60,905.40,924.40,905.60,924.20,905.80,924.00,906.00,923.80,906.20,923.60,906.40,923.40,906.60,923.20,906.80,923.00,907.00,922.80,907.20,922.60,907.40,922.40,907.60,922.20,907.80,922.00,908.00,921.80,908.20,921.60,908.40,921.40,908.60,921.20,908.80,921.00,909.00,920.80,909.20,920.60,909.40,920.40,909.60,920.20,909.80,920.00,910.00,919.80,910.20,919.60,910.40,919.40,910.60,919.20,910.80,919.00,911.00,918.80,911.20,918.60,911.40,918.40,911.60,918.20,911.80,918.00,912.00,917.80,912.20,917.60,912.40,917.40,912.60,917.20,912.80,917.00,913.00,916.80,913.20,916.60,913.40,916.40,913.60,916.20,913.80,916.00,914.00,915.80,914.20,915.60,914.40,915.40,914.60,915.20,914.80,915.00};
 int numberOfChannels = 128;
 int hopsCompleted = 0;
 int packetCounter = 0;
@@ -870,7 +871,7 @@ void loop()
           
         exportData(debugMsg, strlen(debugMsg));
       }   
-    } else {
+    } else if(state != RADIOLIB_ERR_CRC_MISMATCH) { // don't report crc errors
       char msgOut[MTU] = "AT+ERROR=";
       char tempCode[128];
       memset(tempCode, 0, sizeof(tempCode));
@@ -1215,7 +1216,7 @@ String callCMD(const uint8_t* buf, const uint8_t len){
   else if(strncmp((char*)buf, (char*)"AT+SLEEP", sizeof("AT+SLEEP")-1) == 0){ // get name
     ret = "AT+ERROR=NO_VALUE_SPECIFIED";
   }
-  else if(strncmp((char*)buf, (char*)"AT+SETRANGE=", sizeof("AT+SETRANGE=")-1) == 0){ // set LoRa to recommended settings (0-3)
+  /*else if(strncmp((char*)buf, (char*)"AT+SETRANGE=", sizeof("AT+SETRANGE=")-1) == 0){ // set LoRa to recommended settings (0-3)
     bufStart = sizeof("AT+SETRANGE=")-1;
     for(uint8_t i = pos; i < len; i++){
       if((char)buf[pos+bufStart] != '\r'){
@@ -1250,7 +1251,7 @@ String callCMD(const uint8_t* buf, const uint8_t len){
   }
   else if(strncmp((char*)buf, (char*)"AT+SETRANGE", sizeof("AT+SETRANGE")-1) == 0){ // get name
     ret = "AT+ERROR=NO_VALUE_SPECIFIED";
-  }
+  }*/
   else if(strncmp((char*)buf, (char*)"AT+BTEN=", sizeof("AT+BTEN=")-1) == 0){ // set new name
     bufStart = sizeof("AT+BTEN=")-1;
     for(uint8_t i = pos; i < len; i++){
@@ -1791,9 +1792,31 @@ String callCMD(const uint8_t* buf, const uint8_t len){
         }
       }
     }
-    DEFICHAT = String(process).toInt();
-    setConfig();
-    ret = "AT+OK";
+    bool def = String(process).toInt();
+    if(def){
+      DEFICHAT = 1;
+      ENCRYPT = 1;
+      CRC = 1;
+      FHSS = 1;
+      HC = 105;
+      FREQ = channels[HC];
+      BW = 250.0;
+      HP = 25;
+      SF = 12;
+      CR = 5;
+      SW = 0xDC; // LoRa Sync Word
+      PRE = 12; // LoRa Preamble
+      PWR = 20; // LoRa Power Level
+      GAIN = 0; //LoRa GAIN
+      setConfig();
+      ret = "AT+OK";
+      reset();
+    } else {
+      DEFICHAT = 0;
+      SW = 0xDD; // LoRa Sync Word
+      setConfig();
+      ret = "AT+OK";
+    }
     // in this case, chamges won't take effect until reset
   }
   else if(strncmp((char*)buf, (char*)"AT+DEFICHAT", sizeof("AT+DEFICHAT")-1) == 0){ // get name

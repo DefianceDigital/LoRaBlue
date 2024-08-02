@@ -17,18 +17,18 @@ bool BTEN = 1; // Bluetooth Enabled
 uint8_t BAUD = 3; // UART BAUD
 bool DEBUG = 0;
 bool FHSS = 1; // Frequency Hopping Spread Spectrum
-uint8_t HC = 64; // LoRa Home Channel (FHSS=true)
-float FREQ = 915.0; // LoRa Frequency (FHSS=false)
-uint16_t HP = 125; // LoRa hopping period (FHSS=false)
+uint8_t HC = 105; // LoRa Home Channel (FHSS=true)
+float FREQ = 912.8; // LoRa Frequency (FHSS=false)
+uint16_t HP = 25; // LoRa hopping period (FHSS=false)
 float BW = 250.0; // LoRa bandwidth
-uint8_t SF = 10; // LoRa Spreading Factor
-uint8_t CR = 8; // LoRa coding rate
-uint8_t SW = 221; // LoRa Sync Word (0xDD)
-uint8_t PRE = 6; // LoRa Preamble
+uint8_t SF = 12; // LoRa Spreading Factor
+uint8_t CR = 5; // LoRa coding rate
+uint8_t SW = 0xDC; // LoRa Sync Word (0xDD)
+uint8_t PRE = 12; // LoRa Preamble
 uint8_t PWR = 20; // LoRa Power Level
 uint8_t GAIN = 0; //LoRa GAIN
-bool CRC = 0; // LoRa Cyclic Redundancy Check
-uint8_t LED = 2; // 0=none, 1=con only, 2=con+fhss, 3=fhss only
+bool CRC = 1; // LoRa Cyclic Redundancy Check
+uint8_t LED = 1; // 0=none, 1=con only, 2=con+fhss, 3=fhss only
 bool ENAP = 0; // Enable all peripherals
 // AT Command Variables
 
