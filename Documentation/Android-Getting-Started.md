@@ -59,7 +59,7 @@ You would not be able to understand devices using the public "open sesame" passp
 This is because you are using different encryption keys. The only way to decrypt messages is by knowing the passphrase they are using. It is
 important to note that this does not effect Echoes. Messages are echoed even if the device that recieves the message cannot understand the
 encryption. Two devices recieving messages using different passphrases will still echo the messages, as long as the echo count of the recieved
-message is not greater than their Max Echo setting.<br><br>
+message is not greater than their Max Echo setting.  
 
 <img src="https://github.com/user-attachments/assets/e0509d3c-c746-4a1e-ad8a-28efbcd51705" width="200" />  
 
@@ -69,7 +69,7 @@ with another device, you can greatly extend the maximum range of the radio betwe
 communicate with other devices not using these exact settings. It's only recommended to change these settings if you know what you're doing and
 the other device does as well. A possible reason for doing this is if you are out in a heavily wooded area and want to increase the range at which 
 devices can communicate. DefiChat settings are not intended to reach maximum range because the longer the range, the longer it takes to send the 
-message. Default DefiChat settings are a balance of all factors to make the network function it's best. Don't be afraid to play around with these 
+message. Default DefiChat settings are a balance of all factors to make the network function at it's best. Don't be afraid to play around with these 
 settings though, as you can simply click "Set Radio Parameters Back To DefiChat Default" and you will be back in the DefiChat network.  
 <img src="https://github.com/user-attachments/assets/7d1e7d2a-5556-4a54-abc1-5608ccbc6a77" width="200" />  
 
