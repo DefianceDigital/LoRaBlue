@@ -28,6 +28,8 @@ uint8_t PRE = 12; // LoRa Preamble
 uint8_t PWR = 20; // LoRa Power Level
 uint8_t GAIN = 0; //LoRa GAIN
 bool CRC = 1; // LoRa Cyclic Redundancy Check
+bool EXPHDR = 1; // 0 = implicit header, 1 = explicit header
+uint8_t LDRO = 2; // 0=LDRO-off, 1=LDRO-on, 2=LDRO-auto
 uint8_t LED = 1; // 0=none, 1=con only, 2=con+fhss, 3=fhss only
 bool ENAP = 0; // Enable all peripherals
 // AT Command Variables
@@ -168,6 +170,20 @@ void getConfig(){
       Serial.print("CRC="); Serial.println(CRC);
     }
 
+    // EXPHDR
+    while(file.read() != '=');
+    EXPHDR = file.readStringUntil('\n').toInt();
+    if(cfgDebug){
+      Serial.print("EXPHDR="); Serial.println(EXPHDR);
+    }
+
+    // LDRO
+    while(file.read() != '=');
+    LDRO = file.readStringUntil('\n').toInt();
+    if(cfgDebug){
+      Serial.print("LDRO="); Serial.println(LDRO);
+    }
+
     // LED
     while(file.read() != '=');
     LED = file.readStringUntil('\n').toInt();
@@ -235,6 +251,8 @@ void setConfig(){
       file.print("PWR="); file.println(PWR);
       file.print("GAIN="); file.println(GAIN);
       file.print("CRC="); file.println(CRC);
+      file.print("EXPHDR="); file.println(EXPHDR);
+      file.print("LDRO="); file.println(LDRO);
       file.print("LED="); file.println(LED);
       file.print("ENAP="); file.println(ENAP);
       file.print("ENCRYPT="); file.println(ENCRYPT);

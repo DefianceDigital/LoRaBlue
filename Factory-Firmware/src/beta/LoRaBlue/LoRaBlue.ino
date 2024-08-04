@@ -33,7 +33,7 @@ BLEDis  bledis;  // device information
 BLEUart bleuart; // uart over ble
 BLEBas  blebas;  // battery
 
-float version = 1.27;
+float version = 1.28;
 #define MTU 247
 uint8_t periph = 0; //used to respond on appropriate peripheral
 volatile bool requestReceipt = false; // if we're echoing a message, we want or need a response
@@ -265,58 +265,32 @@ void setup()
     delay(100);
   }
   
-    int state;
-    if(FHSS){
-      state = radio.begin(/*freq*/ channels[HC],/*bw*/ BW,/*sf*/ SF, /*cr*/ CR, /*sw*/ SW, /*pwr*/ PWR, /*pre*/ PRE, /*gain*/ GAIN); 
-    } else {
-      state = radio.begin(/*freq*/ FREQ,/*bw*/ BW,/*sf*/ SF, /*cr*/ CR, /*sw*/ SW, /*pwr*/ PWR, /*pre*/ PRE, /*gain*/ GAIN); 
-    }
-    if (state == RADIOLIB_ERR_NONE) {
-      state = radio.setCRC(CRC); // doesn't seem to actually work ?
-      if (state == RADIOLIB_ERR_NONE) {
-        if(FHSS){
-          state = radio.setFHSSHoppingPeriod(HP);
-          //radio.setDio1Action(setFHSSFlag, RISING);
-        }
-        if (state == RADIOLIB_ERR_NONE) {
-          //radio.setDio0Action(setRxFlag, RISING);
-          //state = radio.startReceive();
-          if (state == RADIOLIB_ERR_NONE) {
-            //Serial.println("AT+STARTUP=OK");
-            //Serial1.println("AT+STARTUP=OK");
-          } else {
-            //Serial.println("AT+STARTUP=" + errorCode[abs(state)]);
-            //Serial1.println("AT+STARTUP=" + errorCode[abs(state)]);
-          }
-        } else {
-          //Serial.println("AT+STARTUP=" + errorCode[abs(state)]);
-          //Serial1.println("AT+STARTUP=" + errorCode[abs(state)]);
-          //while (true);
-        }
-      } else {
-        //Serial.println("AT+STARTUP=" + errorCode[abs(state)]);
-        //Serial1.println("AT+STARTUP=" + errorCode[abs(state)]);
-        //while (true);
-     
-      }
-    } else {
-      //Serial.println("AT+STARTUP=" + errorCode[abs(state)]);
-      //Serial1.println("AT+STARTUP=" + errorCode[abs(state)]);
-      //while (true);
-    }
-
-    // reset the counter
-  hopsCompleted = 0;
+  int state;
   if(FHSS){
-    // return to home channel before the next transaction
-    int state = radio.setFrequency(channels[HC]);
-    if (state != RADIOLIB_ERR_NONE) {
-      Serial.print(F("[LoRa] Failed to change frequency, code "));
-      Serial.println(errorCode[abs(state)]);
+    state = radio.begin(/*freq*/ channels[HC],/*bw*/ BW,/*sf*/ SF, /*cr*/ CR, /*sw*/ SW, /*pwr*/ PWR, /*pre*/ PRE, /*gain*/ GAIN); 
+  } else {
+    state = radio.begin(/*freq*/ FREQ,/*bw*/ BW,/*sf*/ SF, /*cr*/ CR, /*sw*/ SW, /*pwr*/ PWR, /*pre*/ PRE, /*gain*/ GAIN); 
+  }
+  if (state == RADIOLIB_ERR_NONE) { // if radio initialized
+    if(EXPHDR){
+      radio.explicitHeader();
     }
-
-    // set the function to call when we need to change frequency
-    radio.setDio1Action(setFHSSFlag, RISING);
+    radio.setCRC(CRC);
+    if(LDRO == 0){ // LDRO off
+      radio.forceLDRO(false);
+    } else if(LDRO == 1){ // LDRO on
+      radio.forceLDRO(true);
+    } else if(LDRO == 2){ // LDRO auto
+      radio.autoLDRO();
+    }
+    if(FHSS){
+      state = radio.setFHSSHoppingPeriod(HP);
+      radio.setDio1Action(setFHSSFlag, RISING);
+    }
+  } else {
+    Serial.println("AT+STARTUP=" + errorCode[abs(state)]);
+    Serial1.println("AT+STARTUP=" + errorCode[abs(state)]);
+    //while (true);
   }
     
     radio.setDio0Action(setRxFlag, RISING);
@@ -1808,6 +1782,8 @@ String callCMD(const uint8_t* buf, const uint8_t len){
       PRE = 12; // LoRa Preamble
       PWR = 20; // LoRa Power Level
       GAIN = 0; //LoRa GAIN
+      LDRO = 2;
+      EXPHDR = 1;
       setConfig();
       ret = "AT+OK";
       reset();
@@ -1962,10 +1938,78 @@ String callCMD(const uint8_t* buf, const uint8_t len){
     MAXECHO = String(process).toInt();
     setConfig();
     ret = "AT+OK";
+    reset();
     // in this case, chamges won't take effect until reset
   }
   else if(strncmp((char*)buf, (char*)"AT+MAXECHO", sizeof("AT+MAXECHO")-1) == 0){ // get name
     ret = "AT+MAXECHO=" + String(MAXECHO);
+  }
+  else if(strncmp((char*)buf, (char*)"AT+EXPHDR=", sizeof("AT+EXPHDR=")-1) == 0){ // set new name
+    bufStart = sizeof("AT+EXPHDR=")-1;
+    for(uint8_t i = pos; i < len; i++){
+      if((char)buf[pos+bufStart] != '\r'){
+        if((char)buf[pos+bufStart] != '\n'){
+          if(buf[pos+bufStart] != 0x00){
+            process[pos] = buf[pos+bufStart]; //buf[pos];
+            pos++;
+          }
+        }
+      }
+    }
+    bool def = String(process).toInt();
+    if(def){
+      int state = radio.explicitHeader();
+      if (state == RADIOLIB_ERR_NONE) {
+        EXPHDR = 1;
+        setConfig();
+        ret = "AT+OK";
+      } else {
+        ret = "AT+ERROR=" + errorCode[abs(state)] + "_[" + String(process).toInt() + "]";
+      }
+    } else {
+      EXPHDR = 0;
+      setConfig();
+      ret = "AT+OK";
+    }
+  }
+  else if(strncmp((char*)buf, (char*)"AT+EXPHDR", sizeof("AT+EXPHDR")-1) == 0){ // get name
+    ret = "AT+EXPHDR=" + String(EXPHDR);
+  }
+  else if(strncmp((char*)buf, (char*)"AT+LDRO=", sizeof("AT+LDRO=")-1) == 0){ // set new name
+    bufStart = sizeof("AT+LDRO=")-1;
+    for(uint8_t i = pos; i < len; i++){
+      if((char)buf[pos+bufStart] != '\r'){
+        if((char)buf[pos+bufStart] != '\n'){
+          if(buf[pos+bufStart] != 0x00){
+            process[pos] = buf[pos+bufStart]; //buf[pos];
+            pos++;
+          }
+        }
+      }
+    }
+    uint8_t def = String(process).toInt();
+    if(def < 3){
+      int state;
+      if(def == 0){ // LDRO off
+        state = radio.forceLDRO(false);
+      } else if(LDRO == 1){ // LDRO on
+        state = radio.forceLDRO(true);
+      } else if(LDRO == 2){ // LDRO auto
+        state = radio.autoLDRO();
+      }
+      if (state == RADIOLIB_ERR_NONE) {
+        LDRO = def;
+        setConfig();
+        ret = "AT+OK";
+      } else {
+        ret = "AT+ERROR=" + errorCode[abs(state)] + "_[" + String(process).toInt() + "]";
+      }
+    } else {
+      ret = "AT+ERROR=INVALID_LDRO_SELECTION";
+    }
+  }
+  else if(strncmp((char*)buf, (char*)"AT+LDRO", sizeof("AT+LDRO")-1) == 0){ // get name
+    ret = "AT+LDRO=" + String(LDRO);
   }
   /////////// End of variables ///////////
   else {
@@ -1973,8 +2017,10 @@ String callCMD(const uint8_t* buf, const uint8_t len){
   }
   
   // the need for this appears to be a glitch we just can't find the cause
-  if((LED > 0) && (LED < 3)){
-    digitalWrite(LED_BUILTIN, HIGH);
+  if(periph == 2){
+    if((LED > 0) && (LED < 3)){
+      digitalWrite(LED_BUILTIN, HIGH);
+    }
   }
 
   return ret + "\n";
