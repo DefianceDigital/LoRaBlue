@@ -1,4 +1,4 @@
-# Getting Started With Android  
+# Getting Started With LoRaBlue and Android  
 
 ### Step 1: Click "Scan for devices"  
 <img src="https://github.com/user-attachments/assets/b06a8a57-7412-48d3-93eb-f6dba1b7c2eb" width="200" />  
