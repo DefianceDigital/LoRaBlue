@@ -58,7 +58,7 @@ If you change it to something like "for green trucks only", only those using tha
 You would not be able to understand devices using the public "open sesame" passphrase and they will not be able to understand you.
 This is because you are using different encryption keys. The only way to decrypt messages is by knowing the passphrase they are using. It is
 important to note that this does not effect Echoes. Messages are echoed even if the device that recieves the message cannot understand the
-encryption. Two devices recieving messages using different passphrases will still echo the messages, as long is the echo count of the recieved
+encryption. Two devices recieving messages using different passphrases will still echo the messages, as long as the echo count of the recieved
 message is not greater than their Max Echo setting.<br><br>
 
 <img src="https://github.com/user-attachments/assets/e0509d3c-c746-4a1e-ad8a-28efbcd51705" width="200" />  
