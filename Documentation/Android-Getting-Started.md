@@ -10,23 +10,23 @@
 <img src="https://github.com/user-attachments/assets/9e90dffd-92fd-4cb9-a31f-88fcbc3bf7c7" width="200" />  
 
 ### Step 4: Enter a username  
-This just tells other people listening who you want to be known as.  
+This just tells other people listening who you want to be known as.<br>  
 <img src="https://github.com/user-attachments/assets/75191872-247a-4a2b-8d15-5a59664883cd" width="200" />  
 
 ### Step 5: Enter Configuration menu  
-Click "Configuration" at the top-right.  
+Click "Configuration" at the top-right.<br>  
 <img src="https://github.com/user-attachments/assets/9dcd2f35-ef3e-4a19-99dc-2b5735ba2db9" width="200" />  
 
 ### Step 6: Change your pin and press "Set" (must be 6 digits)  
 This pin not only prevents unauthorized people from accessing your device, it also sets encryption keys
-for the BLE connection, encrypting messages between your phone and LoRaBlue device.  
+for the BLE connection, encrypting messages between your phone and LoRaBlue device.<br>  
 <img src="https://github.com/user-attachments/assets/4f979734-c947-44db-b803-38b7262a63b0" width="200" />
 <img src="https://github.com/user-attachments/assets/ae3b49f8-aded-4428-8866-5df3ac0caf8c" width="200" />
 <img src="https://github.com/user-attachments/assets/e34d304d-6eab-4bb5-a435-5cc3091ad7b8" width="200" />
 <img src="https://github.com/user-attachments/assets/c5efaa6b-b90b-460e-9d0a-f65c4a2dd4c1" width="200" />  
 
 ### Step 7: Decide whether to use "Text Mode" or "Audio Mode"  
-Here we recieved a message from username "Brad". You can send messages just like you would a text message  
+Here we recieved a message from username "Brad". You can send messages just like you would a text message<br>  
 <img src="https://github.com/user-attachments/assets/e63a9d65-a39b-4c1f-a25e-70a0753e1fdf" width="200" />
 <img src="https://github.com/user-attachments/assets/b2e121ec-a2ee-4373-9a1b-ee5cefd8a0cd" width="200" />
 <img src="https://github.com/user-attachments/assets/a0dd82a4-da24-45d6-a13b-cf568d1aef4c" width="200" />  
@@ -38,7 +38,7 @@ resistant to noise, so it's perfect for a noisy truck. It also uses your phone's
 any connected headset, so it's independent of any call you may be in. When a message is recieved, it will convert the recieved 
 text into audible speech and read it out loud to you. Whether you're using Text or Audio mode doesn't matter to other devices. 
 They recieve messages in their preferred way. If you didn't quite understand a message recieved in Audio mode, you can switch to 
-text mode and find it there. Once read, simply go back to Audio mode.  
+text mode and find it there. Once read, simply go back to Audio mode.<br>  
 <img src="https://github.com/user-attachments/assets/587196b3-4c2c-473f-bf47-d2cfefda6a74" width="200" />  
 
 ### Step 9: Basic configuration.  
@@ -59,7 +59,7 @@ You would not be able to understand devices using the public "open sesame" passp
 This is because you are using different encryption keys. The only way to decrypt messages is by knowing the passphrase they are using. It is
 important to note that this does not effect Echoes. Messages are echoed even if the device that recieves the message cannot understand the
 encryption. Two devices recieving messages using different passphrases will still echo the messages, as long as the echo count of the recieved
-message is not greater than their Max Echo setting.  
+message is not greater than their Max Echo setting.<br>  
 
 <img src="https://github.com/user-attachments/assets/e0509d3c-c746-4a1e-ad8a-28efbcd51705" width="200" />  
 
@@ -70,8 +70,5 @@ communicate with other devices not using these exact settings. It's only recomme
 the other device does as well. A possible reason for doing this is if you are out in a heavily wooded area and want to increase the range at which 
 devices can communicate. DefiChat settings are not intended to reach maximum range because the longer the range, the longer it takes to send the 
 message. Default DefiChat settings are a balance of all factors to make the network function at it's best. Don't be afraid to play around with these 
-settings though, as you can simply click "Set Radio Parameters Back To DefiChat Default" and you will be back in the DefiChat network.  
+settings though, as you can simply click "Set Radio Parameters Back To DefiChat Default" and you will be back in the DefiChat network.<br>  
 <img src="https://github.com/user-attachments/assets/7d1e7d2a-5556-4a54-abc1-5608ccbc6a77" width="200" />  
-
-
-
