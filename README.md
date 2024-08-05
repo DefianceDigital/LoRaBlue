@@ -45,7 +45,10 @@ the range as 2.5+ miles because we believe in accurate representations. In an ur
 the range will typically be <1.0 miles due to noise and obstructions. Wooded areas 
 will also provide ranges closer to that of urban environments.  
 
-<br>
+# DefiChat Mobile App  
+Currently, we only have an Android app but we hope to support iPhone soon.  
+<a href="https://github.com/DefianceDigital/LoRaBlue/blob/main/Documentation/Android-Getting-Started.md">View the DefiChat for Android Tutorial</a>  
+<a href="https://github.com/DefianceDigital/LoRaBlue/raw/main/AppInventor/DefiChat.apk">Download DefiChat for Android</a>  
 
 ## LoRaBlue Standard Kit (Estimated Price: $55)  
 <b>&#x2022; LoRaBlue Tranciever</b>  
@@ -60,8 +63,6 @@ will also provide ranges closer to that of urban environments.
 <img src="https://github.com/user-attachments/assets/588a56ce-592f-416e-8bdb-ecd73c38ca2d" width="500" />  
 <img src="https://github.com/user-attachments/assets/f27545bc-6c1c-45d0-aa2d-c74fd386b754" width="500" />  
 
-<br>
-
 ## LoRaBlue Portability Expansion Kit  (Estimated Price: $45)    
 <b>&#x2022; LoRaBlue-Bank (Power Bank)</b>  
 <b>&#x2022; 3dBi Folding Antenna</b>  
@@ -70,7 +71,7 @@ will also provide ranges closer to that of urban environments.
 <img src="https://github.com/user-attachments/assets/860e0624-8b1f-401f-b1b0-0acebec728d3" width="500" />  
 <img src="https://github.com/user-attachments/assets/745c5d30-c4bc-4657-a164-8e204d8aee5b" width="500" />  
 
-# LoRaBlue Power Consumption (Taken via LoRaBlue-Bank)
+# LoRaBlue Power Consumption
 Transmit Current: <155mA  
 Recieve Current: <31mA   
 Sleep Current: <0.4mA  
