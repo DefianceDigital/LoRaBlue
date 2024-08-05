@@ -16,6 +16,19 @@ it's long range by broadcasting messages at a very slow rate, on different frequ
 communicating small amounts of data such as a text message or sensor value, but utterly useless in 
 sending a photo for example. It uses frequencies that are license-free and unlike CB radios or similar devices,
 it's legal to encrypt your messages.
+---
+<br>  
+
+## LoRaBlue Standard Kit (Estimated Price: $55)  
+<b>&#x2022; LoRaBlue Tranciever</b>  
+<b>&#x2022; 5.8dBi Antenna</b>  
+<b>&#x2022; 3m Type-C Power Cord</b>  
+<b>&#x2022; Type-C Male-Male Adapter</b>  
+<b>&#x2022; 2x Adhesive Mounting Pads</b>  
+<b>&#x2022; Developer Pin Header Adapter</b>  
+<b>&#x2022; 5V 1A Wall Plug</b>  
+<b>&#x2022; 5V 1A Automotive Plug</b>  
+<img src="https://github.com/user-attachments/assets/0afdd023-803d-4f5a-bd0d-5930d8e7eddf" width="500" /> 
 
 <br><br><br><br><br><br><br><br><br><br>
 ---
