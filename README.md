@@ -8,47 +8,6 @@ an extremely easy to use device that can plug into a USB port and give it LoRa c
 To the radio enthusiest, it's a way to communicate locally and easily experiment with the technology.
 To everyone else, it is what you want it to be. It is designed to be used or reprogrammed by anybody.
 
-## What is LoRa?  
-LoRa stands for "Long Range" and it's technology developed for battery powered IOT sensors to communicate
-long distances with very little power. How it works is a little complicated but essentially, it achieves
-it's long range by broadcasting messages at a very slow rate, on different frequencies. This is great if you're 
-communicating small amounts of data such as a text message or sensor value, but utterly useless in 
-sending a photo for example. It uses frequencies that are license-free and unlike CB radios or similar devices,
-it's legal to encrypt these transmissions.
-
-<br>  
-
-------
-
-<br>
-
-## LoRaBlue Standard Kit (Estimated Price: $55)  
-<b>&#x2022; LoRaBlue Tranciever</b>  
-<b>&#x2022; 5.8dBi Antenna</b>  
-<b>&#x2022; 3m Type-C Power Cord</b>  
-<b>&#x2022; Type-C Male-Male Adapter</b>  
-<b>&#x2022; 2x Adhesive Mounting Pads</b>  
-<b>&#x2022; Developer Pin Header Adapter</b>  
-<b>&#x2022; 5V 1A Wall Plug</b>  
-<b>&#x2022; 5V 1A Automotive Plug</b><br>  
-<img src="https://github.com/user-attachments/assets/0afdd023-803d-4f5a-bd0d-5930d8e7eddf" width="500" />  
-<img src="https://github.com/user-attachments/assets/588a56ce-592f-416e-8bdb-ecd73c38ca2d" width="500" />  
-<img src="https://github.com/user-attachments/assets/f27545bc-6c1c-45d0-aa2d-c74fd386b754" width="500" />  
-
-<br>
-
-## LoRaBlue Portability Expansion Kit  (Estimated Price: $45)    
-<b>&#x2022; LoRaBlue-Bank (Power Bank)</b>  
-<b>&#x2022; 3dBi Folding Antenna</b>  
-<b>&#x2022; Portable Assembly Clip</b>  
-<b>&#x2022; Assembly Stand</b><br>  
-<img src="https://github.com/user-attachments/assets/860e0624-8b1f-401f-b1b0-0acebec728d3" width="500" />  
-<img src="https://github.com/user-attachments/assets/745c5d30-c4bc-4657-a164-8e204d8aee5b" width="500" />  
-
-
-
-<br><br><br><br><br><br><br><br><br><br>
----
 # DefiChat Introduction  
 DefiChat is a psudo-mesh protocol that allows for a virtually unlimited range. 
 Messages are encrypted by default but can also be set to unencrypted. Even if the recieving 
@@ -84,7 +43,32 @@ to '5' by default, this translates to a typical range of 3-15 miles. It is impos
 the maximum range for every case because there are so many factors that go into it. Officially we list 
 the range as 2.5+ miles because we believe in accurate representations. In an urban environment, 
 the range will typically be <1.0 miles due to noise and obstructions. Wooded areas 
-will also provide ranges closer to that of urban environments.
+will also provide ranges closer to that of urban environments.  
+
+<br>
+
+## LoRaBlue Standard Kit (Estimated Price: $55)  
+<b>&#x2022; LoRaBlue Tranciever</b>  
+<b>&#x2022; 5.8dBi Antenna</b>  
+<b>&#x2022; 3m Type-C Power Cord</b>  
+<b>&#x2022; Type-C Male-Male Adapter</b>  
+<b>&#x2022; 2x Adhesive Mounting Pads</b>  
+<b>&#x2022; Developer Pin Header Adapter</b>  
+<b>&#x2022; 5V 1A Wall Plug</b>  
+<b>&#x2022; 5V 1A Automotive Plug</b><br>  
+<img src="https://github.com/user-attachments/assets/0afdd023-803d-4f5a-bd0d-5930d8e7eddf" width="500" />  
+<img src="https://github.com/user-attachments/assets/588a56ce-592f-416e-8bdb-ecd73c38ca2d" width="500" />  
+<img src="https://github.com/user-attachments/assets/f27545bc-6c1c-45d0-aa2d-c74fd386b754" width="500" />  
+
+<br>
+
+## LoRaBlue Portability Expansion Kit  (Estimated Price: $45)    
+<b>&#x2022; LoRaBlue-Bank (Power Bank)</b>  
+<b>&#x2022; 3dBi Folding Antenna</b>  
+<b>&#x2022; Portable Assembly Clip</b>  
+<b>&#x2022; Assembly Stand</b><br>  
+<img src="https://github.com/user-attachments/assets/860e0624-8b1f-401f-b1b0-0acebec728d3" width="500" />  
+<img src="https://github.com/user-attachments/assets/745c5d30-c4bc-4657-a164-8e204d8aee5b" width="500" />  
 
 # LoRaBlue Power Consumption (Taken via LoRaBlue-Bank)
 Transmit Current: <155mA  
