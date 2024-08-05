@@ -1,6 +1,6 @@
 # What is LoRaBlue?  
 LoRaBlue is a different thing to different people. To the truck driver it's a modern-day, private,
-encrypted and affordable replacement to the CB radio (it was invented by a career truck driver afterall).
+encrypted, affordable, and extremely long-range replacement to the CB radio (it was invented by a career truck driver afterall).
 To the nature lover or survivalist, it's a device that let's you communicate via your cell phone when
 there is no cell service or internet access. To the DIY electronics enthusiest, it's a fully open-source,
 Arduino-Compatible development board with LoRa and Bluetooth built in. To the computer programmer, it's
@@ -14,9 +14,13 @@ long distances with very little power. How it works is a little complicated but 
 it's long range by broadcasting messages at a very slow rate, on different frequencies. This is great if you're 
 communicating small amounts of data such as a text message or sensor value, but utterly useless in 
 sending a photo for example. It uses frequencies that are license-free and unlike CB radios or similar devices,
-it's legal to encrypt your messages.
+it's legal to encrypt these transmissions.
 
 <br>  
+
+------
+
+<br>
 
 ## LoRaBlue Standard Kit (Estimated Price: $55)  
 <b>&#x2022; LoRaBlue Tranciever</b>  
