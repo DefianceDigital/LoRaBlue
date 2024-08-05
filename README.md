@@ -9,6 +9,27 @@ To the radio enthusiest, it's a way to communicate locally and easily experiment
 To everyone else, it is what you want it to be. It is designed to be used or reprogrammed by anybody.
 
 # DefiChat Introduction  
+DefiChat is an encrypted radio tranceiver where users can "echo" other users' messages.  
+By default, the maximum range of a DefiChat message is about 3 miles, but echoes allow this range to be greatly increased.   
+
+# DefiChat Data Privacy  
+Messages themselves are not stored on the LoRaBlue device. Up to 100 Message IDs 
+will be stored at a time. Newer Message IDs will replace the oldest Message IDs. Message IDs 
+are stored in ram, so they will no longer exist after the device is reset.
+
+# DefiChat Maximum Range  
+DefiChat has underwent extensive testing to find the 
+best possible settings for the network to function at it's best. While long range was a 
+factor, reliability was deemed the most important because DefiChat uses echoes to greatly 
+increase range anyway. When using the properly mounted 5.8dBi antennas, the typical range 
+is 3.0 miles. This is highly comparible to the average CB radio, but with MAXECHO being set 
+to '5' by default, this translates to a typical range of 3-15 miles. It is impossible to predict 
+the maximum range for every case because there are so many factors that go into it. Officially we list 
+the range as 2.5+ miles because we believe in accurate representations. In an urban environment, 
+the range will typically be <1.0 miles due to noise and obstructions. Wooded areas 
+will also provide ranges closer to that of urban environments.  
+
+# How DefiChat Works  
 DefiChat is a psudo-mesh protocol that allows for a virtually unlimited range. 
 Messages are encrypted by default but can also be set to unencrypted. Even if the recieving 
 device cannot decrypt the message, it will still echo it. When a DefiChat 
@@ -25,25 +46,6 @@ will not be able to continue and the message will have reached it's maximum rang
 In summary, when a message is sent it bounces along other DefiChat devices for as 
 long as they are willing to forward that message, making the maximum range theoretically 
 unlimited.  
-
-# DefiChat Data Privacy  
-Messages themselves are not stored on the LoRaBlue device. Up to 100 Message IDs 
-will be stored at a time. Newer Message IDs will replace the oldest Message IDs. Message IDs 
-are stored in ram, so they will no longer exist after the device is reset.
-
-# DefiChat Maximum Range  
-The maximum range for DefiChat is actually much lower than LoRaBlue itself is capable of. 
-This is due to many factors. Primarily it's due to the radio settings themselves, as 
-well as the longer message lengths. DefiChat has underwent extensive testing to find the 
-best possible settings for the network to function at it's best. While long range was a 
-factor, reliability was deemed the most important because DefiChat uses echoes to greatly 
-increase range anyway. When using the properly mounted 5.8dBi antennas, the typical range 
-is 3.0 miles. This is highly comparible to the average CB radio, but with MAXECHO being set 
-to '5' by default, this translates to a typical range of 3-15 miles. It is impossible to predict 
-the maximum range for every case because there are so many factors that go into it. Officially we list 
-the range as 2.5+ miles because we believe in accurate representations. In an urban environment, 
-the range will typically be <1.0 miles due to noise and obstructions. Wooded areas 
-will also provide ranges closer to that of urban environments.  
 
 # DefiChat Mobile App  
 Currently, we only have an Android app but we hope to support iPhone soon.  
