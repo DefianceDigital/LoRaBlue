@@ -22,10 +22,9 @@ DefiChat has underwent extensive testing to find the
 best possible settings for the network to function at it's best. While long range was a 
 factor, reliability was deemed the most important because DefiChat uses echoes to greatly 
 increase range anyway. When using the properly mounted 5.8dBi antennas, the typical range 
-is 3.0 miles. This is highly comparible to the average CB radio, but with MAXECHO being set 
-to '5' by default, this translates to a typical range of 3-15 miles. It is impossible to predict 
-the maximum range for every case because there are so many factors that go into it. Officially we list 
-the range as 2.5+ miles because we believe in accurate representations. In an urban environment, 
+is 1-3 miles. This is highly comparible to the average CB radio, but with MAXECHO being set 
+to '5' by default, this translates to a typical range of 1-15 miles. It is impossible to predict 
+the maximum range for every case because there are so many factors that go into it. In an urban environment, 
 the range will typically be <1.0 miles due to noise and obstructions. Wooded areas 
 will also provide ranges closer to that of urban environments.  
 
