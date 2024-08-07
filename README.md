@@ -10,7 +10,7 @@ To everyone else, it is what you want it to be. It is designed to be used or rep
 
 # DefiChat Introduction  
 DefiChat is an encrypted radio tranceiver where users can "echo" other users' messages.  
-By default, the maximum range of a DefiChat message is about 3 miles, but echoes allow this range to be greatly increased.   
+By default, the maximum range of a DefiChat message is 1-3 miles, but echoes allow this range to be greatly increased.   
 
 # DefiChat Data Privacy  
 Messages themselves are not stored on the LoRaBlue device. Up to 100 Message IDs 
