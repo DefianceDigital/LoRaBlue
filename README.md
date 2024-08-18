@@ -6,8 +6,8 @@ LoRa is a license-free radio technology, capable on sending transmissions miles 
 DefiChat takes advantage of this by providing a very user-friendly interface and some very unique features. 
 The mobile app allows you to use either "Text Mode" or "Audio Mode". In text mode, you will be able to send 
 and receive messages just like you would a text message or web chat. Audio mode coverts text into audible speech
-and vice versa (think hold-to-speak on your phone and let up to listen like a cb radio). In either mode, text is encrypted before it's
-sent out and decrypted when it comes in. The key for this encryption is done using a "passphrase". The 
+and vice versa (think hold-to-speak on your phone and let up to listen like a cb radio). In either mode, messages are encrypted before they're
+sent out and decrypted when they come in. The key for this encryption is done using a "passphrase". The 
 default passphrase is "open sesame" and anybody using it can communicate with each other (like a public channel). 
 Everybody with a matching passphrase can understand the message, but those who have a different passphrase cannot 
 decrypt and understand the message. Two users could set their passphrase to say "digital rights are human rights" 
