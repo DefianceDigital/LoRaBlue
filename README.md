@@ -27,10 +27,9 @@ At no point do we see any messages and you can verify this by looking at the sou
 Not only do you have access to all the source code that makes the software and firmware, but we did it using entry-level 
 tools. We wanted it to be easy for the average person to understand how the device works and change it if they so desire.
 LoRaBlue is what's known as a "Arduino compatible Development Board" so it can be completely reprogrammed in any way 
-you wish. If you ever wanted to learn coding, LoRaBlue makes it easy. By default LoRaBlue is a "smart-radio", but 
-it can be literally whatever you make it. It's modeled after Adafruit's "ItsyBitsy nRF52840 Express" so just install that
+you wish. If you ever wanted to learn coding, LoRaBlue makes it easy. It's modeled after Adafruit's "ItsyBitsy nRF52840 Express" so just install that
 board in Arduino if you want to code with it. If you want to change the app, just import the "DefiChat.aia" file into 
-"App Inventor".
+"App Inventor". By default LoRaBlue is a "smart-radio", but it can literally be whatever you make it. 
 
 # DefiChat Maximum Range  
 DefiChat has underwent extensive testing to find the 
