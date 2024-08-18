@@ -30,15 +30,6 @@ LoRaBlue is what's known as a "Arduino compatible Development Board" so it can b
 you wish. If you ever wanted to learn coding, LoRaBlue makes it easy. By default LoRaBlue is a "smart-radio", but 
 it can be literally whatever you make it.
 
-# DefiChat Introduction  
-DefiChat is an encrypted radio tranceiver where users can "echo" other users' messages.  
-By default, the maximum range of a DefiChat message is 1-3 miles, but echoes allow this range to be greatly increased.   
-
-# DefiChat Data Privacy  
-Messages themselves are not stored on the LoRaBlue device. Up to 100 Message IDs 
-will be stored at a time. Newer Message IDs will replace the oldest Message IDs. Message IDs 
-are stored in ram, so they will no longer exist after the device is reset.
-
 # DefiChat Maximum Range  
 DefiChat has underwent extensive testing to find the 
 best possible settings for the network to function at it's best. While long range was a 
