@@ -1,12 +1,34 @@
 # What is LoRaBlue?  
-LoRaBlue is a different thing to different people. To the truck driver it's a modern-day, private,
-encrypted, affordable, and extremely long-range replacement to the CB radio (it was invented by a career truck driver afterall).
-To the nature lover or survivalist, it's a device that let's you communicate via your cell phone when
-there is no cell service or internet access. To the DIY electronics enthusiest, it's a fully open-source,
-Arduino-Compatible development board with LoRa and Bluetooth built in. To the computer programmer, it's
-an extremely easy to use device that can plug into a USB port and give it LoRa communication capabilities.
-To the radio enthusiest, it's a way to communicate locally and easily experiment with the technology.
-To everyone else, it is what you want it to be. It is designed to be used or reprogrammed by anybody.
+To understand LoRaBlue, you first have to understand DefiChat. DefiChat is the heart of the firmware that comes 
+programmed on every LoRaBlue device. It's like a cross between a CB radio and an encrypted chat app. You can
+connect to LoRaBlue with your mobile phone via bluetooth and it gives you the ability to communicate over LoRa.
+LoRa is a license-free radio technology, capable on sending transmissions miles away with very low power. 
+DefiChat takes advantage of this by providing a very user-friendly interface and some very unique features. 
+The mobile app allows you to use either "Text Mode" or "Audio Mode". In text mode, you will be able to send 
+and receive messages just like you would a text message or web chat. Audio mode coverts text into audible speech
+and vice versa (think hold-to-speak on your phone and let up to listen like a cb radio). In either mode, text is encrypted before it's
+sent out and decrypted when it comes in. The key for this encryption is done using a "passphrase". The 
+default passphrase is "open sesame" and anybody using it can communicate with each other (like a public channel). 
+Everybody with a matching passphrase can understand the message, but those who have a different passphrase cannot 
+decrypt and understand the message. Two users could set their passphrase to say "digital rights are human rights" 
+and they would be in a private chat. People using "open sesame" while you were using a different one would not be able to understand your messages 
+and you would not be able to understand theirs. Now we'll bring that example into another feature of DefiChat 
+called "echoeing". The typical range of LoRaBlue is 1-3 miles, but let's say you're trying to communicate with 
+somebody 4 miles away. If there is another LoRaBlue device running DefiChat (with echoes enabled), it will
+automatically take that recieved message and repeat it so that the device outside your range still receives it 
+and can still reply. If all 3 devices are using the same passphrase, they are now in a group chat and will see 
+each others' messages. If the device in the middle is using a different passphrase, they will still automatically 
+relay messages to the other two devices, but they won't be able to understand the message they're passing. So 
+DefiChat isn't just a radio that you can operate with your phone, but a communication network where privacy is 
+considered your right. Your messages don't go through any web server or mobile network.
+If you're in a location that has no wireless networks, you still will. Defiance Digital (us) do 
+not collect ANY personal data at ANY point. We provide an off-grid private network and a device that can facilitate it. 
+At no point do we see any messages and you can verify this by looking at the souce code. Absolutely nothing is hidden.
+Not only do you have access to all the source code that makes the software and firmware, but we did it using entry-level 
+tools. We wanted it to be easy for the average person to understand how the device works and change it if they so desire.
+LoRaBlue is what's known as a "Arduino compatible Development Board" so it can be completely reprogrammed in any way 
+you wish. If you ever wanted to learn coding, LoRaBlue makes it easy. By default LoRaBlue is a "smart-radio", but 
+it can be literally whatever you make it.
 
 # DefiChat Introduction  
 DefiChat is an encrypted radio tranceiver where users can "echo" other users' messages.  
