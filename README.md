@@ -29,7 +29,7 @@ tools. We wanted it to be easy for the average person to understand how the devi
 LoRaBlue is what's known as a "Arduino compatible Development Board" so it can be completely reprogrammed in any way 
 you wish. If you ever wanted to learn coding, LoRaBlue makes it easy. It's modeled after Adafruit's "ItsyBitsy nRF52840 Express" so just install that
 board in Arduino if you want to code with it. If you want to change the app, just import the "DefiChat.aia" file into 
-"App Inventor". By default LoRaBlue is a "smart-radio" meant as a more modern, privacy-conscious, and affordable version of the CB radio, 
+"App Inventor". By default LoRaBlue is a "smart-radio" meant as a more modern, privacy-conscious, and affordable version of the CB radio (it was entirely created by a career truck driver afterall), 
 but it can literally be whatever you make it. 
 
 # DefiChat Maximum Range  
